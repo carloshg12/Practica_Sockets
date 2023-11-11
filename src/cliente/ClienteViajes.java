@@ -1,5 +1,6 @@
 package cliente;
 
+import gestor.Viaje;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -22,7 +23,7 @@ public class ClienteViajes {
         do {
             System.out.print("\nElige una opcion (0..5): ");
             opcion = teclado.nextInt();
-        } while ( (opcion<0) || (opcion>5) );
+        } while ((opcion < 0) || (opcion > 5));
         teclado.nextLine(); // Elimina retorno de carro del buffer de entrada
         return opcion;
     }
@@ -31,16 +32,16 @@ public class ClienteViajes {
     /**
      * Programa principal. Muestra el menú repetidamente y atiende las peticiones del cliente.
      *
-     * @param args	no se usan argumentos de entrada al programa principal
+     * @param args no se usan argumentos de entrada al programa principal
      */
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
 
         Scanner teclado = new Scanner(System.in);
 
         // Crea un gestor de viajes
         AuxiliarClienteViajes aux = null;
         try {
-            aux = new AuxiliarClienteViajes("localhost","12345");
+            aux = new AuxiliarClienteViajes("localhost", "12345");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -61,12 +62,17 @@ public class ClienteViajes {
                     System.out.println("Cerrando sesion...");
                     break;
                 case 1: { // Consultar viajes con un origen dado
-
                     // POR IMPLEMENTAR
                     System.out.print("Indica el origen del viaje: ");
                     String origen = teclado.nextLine();
                     JSONArray list = aux.consultaViajes(origen);
-                    System.out.println(list);
+                    for (Object object : list) {
+                        if (object instanceof JSONObject) {
+                            JSONObject viaje = (JSONObject) object;
+                            System.out.println(formatearViaje(viaje));
+                        }
+                    }
+
                     break;
                 }
 
@@ -76,7 +82,7 @@ public class ClienteViajes {
                     System.out.print("Indica el viaje a reservar: ");
                     String codviaje = teclado.nextLine();
                     obj = aux.reservaViaje(codviaje, codcli);
-                    System.out.println(obj);
+                    System.out.println(formatearViaje(obj));
                     break;
                 }
 
@@ -123,5 +129,31 @@ public class ClienteViajes {
         } while (opcion != 0);
 
     } // fin de main
+
+    private static String formatearViaje(JSONObject viaje) {
+        String resultado = "Código del Viaje: " + viaje.get("codviaje") +
+                ", Origen: " + viaje.get("origen") +
+                ", Destino: " + viaje.get("destino") +
+                ", Fecha: " + viaje.get("fecha") +
+                ", Precio: " + viaje.get("precio") +
+                ", Plazas Disponibles: " + viaje.get("numplazas");
+
+        JSONArray pasajeros = (JSONArray) viaje.get("pasajeros");
+        if (pasajeros != null && !pasajeros.isEmpty()) {
+            resultado += ", Pasajeros: ";
+            for (int i = 0; i < pasajeros.size(); i++) {
+                resultado += pasajeros.get(i).toString();
+                if (i < pasajeros.size() - 1) {
+                    resultado += ", ";
+                }
+            }
+        } else {
+            resultado += ", Pasajeros: Ninguno";
+        }
+
+        return resultado;
+    }
+
+
 
 } // fin class

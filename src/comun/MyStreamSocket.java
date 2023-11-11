@@ -36,15 +36,15 @@ public class MyStreamSocket  {
       output = new PrintWriter(new OutputStreamWriter(outStream));
    }
 
-   public void sendMessage(String message) throws IOException {	
-      output.print(message + "\n");   
+   public void sendMessage(String message) throws IOException {
+      output.print(message + "\n");
       //The ensuing flush method call is necessary for the data to
       // be written to the socket data stream before the
       // socket is closed.
       output.flush();               
    } // end sendMessage
 
-   public String receiveMessage() throws IOException {	
+   public String receiveMessage() throws IOException {
       // read a line from the data stream
       return input.readLine();
    } //end receiveMessage

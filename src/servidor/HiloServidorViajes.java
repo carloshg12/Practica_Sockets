@@ -43,11 +43,13 @@ class HiloServidorViajes implements Runnable {
 			while (!done) {
 				// Recibe una petición del cliente
 				String peticion = myDataSocket.receiveMessage();
+				System.out.println(peticion);
+
 				// Extrae la operación y sus parámetros
 				JSONParser parser = new JSONParser();
 				JSONObject jsonObject = (JSONObject) parser.parse(peticion);
-				operacion = (String) jsonObject.get("peticion");
-				System.out.println(operacion);
+				operacion =  jsonObject.get("peticion").toString();
+
 				switch (operacion) {
 				case "0":
 					gestor.guardaDatos();
@@ -56,7 +58,7 @@ class HiloServidorViajes implements Runnable {
 					break;
 
 				case "1": { // Consulta los viajes con un origen dado
-					JSONArray viajes = gestor.consultaViajes((String) jsonObject.get("origen"));
+					JSONArray viajes = gestor.consultaViajes((String)jsonObject.get("origen"));
 					System.out.println(viajes.toJSONString());
 					myDataSocket.sendMessage(viajes.toJSONString());
 					break;
@@ -64,6 +66,11 @@ class HiloServidorViajes implements Runnable {
 				case "2": { // Reserva una plaza en un viaje
 					// ...
 
+					JSONObject viaje = gestor.reservaViaje(jsonObject.get("codviaje").toString(),jsonObject.get("codprop").toString());
+
+					System.out.println(viaje.toJSONString());
+
+					myDataSocket.sendMessage(viaje.toJSONString());
 					break;
 				}             
 				case "3": { // Pone en venta un articulo

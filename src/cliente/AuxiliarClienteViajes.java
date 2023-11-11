@@ -59,7 +59,7 @@ public class AuxiliarClienteViajes {
 			mySocket.sendMessage(consulta.toJSONString());
 			respuesta = mySocket.receiveMessage();
 			array = (JSONArray) parser.parse(respuesta);
-		} catch (Exception e) { e.printStackTrace(); }
+		} catch (Exception e) { e.printStackTrace();}
 
 		return array; // cambiar por el retorno correcto
 	} // end consultaViajes
@@ -74,8 +74,21 @@ public class AuxiliarClienteViajes {
 	 * @return	objeto JSON con los datos del viaje. Vacio si no se ha podido reservar
 	 */
 	public JSONObject reservaViaje(String codviaje, String codcliente) {
-		// POR IMPLEMENTAR
-		return null; // cambiar por el retorno correcto
+		JSONObject consulta = new JSONObject();
+		consulta.put("peticion", 2);
+		consulta.put("codviaje", codviaje);
+		consulta.put("codprop",codcliente);
+
+		String respuesta;
+		JSONObject viaje = new JSONObject();
+		try {
+			mySocket.sendMessage(consulta.toJSONString());
+			respuesta = mySocket.receiveMessage();
+			viaje = (JSONObject) parser.parse(respuesta);
+
+		} catch (Exception e) { e.printStackTrace();}
+		return viaje; // cambiar por el retorno correcto
+
 	} // end reservaViaje
 	
 	/**
@@ -123,6 +136,12 @@ public class AuxiliarClienteViajes {
 	 */
 	public void cierraSesion( ) {
 		// POR IMPLEMENTAR
-
+		JSONObject consulta = new JSONObject();
+		consulta.put("peticion", 0);
+		try {
+			mySocket.sendMessage(consulta.toJSONString());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	} // end done
 } //end class

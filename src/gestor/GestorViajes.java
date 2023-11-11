@@ -13,9 +13,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
 public class GestorViajes {
     private static FileWriter os;            // stream para escribir los datos en el fichero
@@ -139,8 +137,6 @@ public class GestorViajes {
      * @param array JSONArray con los datos de los Viajes
      */
     private void rellenaDiccionario(JSONArray array) {
-
-
         try {
             for (Object obj : array) {
                 JSONObject jsonViaje = (JSONObject) obj;
@@ -152,16 +148,21 @@ public class GestorViajes {
                 String fecha = (String) jsonViaje.get("fecha");
                 int precio = ((Long) jsonViaje.get("precio")).intValue();
                 int numplazas = ((Long) jsonViaje.get("numplazas")).intValue();
+                JSONArray pasajerosArray = (JSONArray) jsonViaje.get("pasajeros");
 
                 Viaje viaje = new Viaje(codprop, origen, destino, fecha, precio, numplazas);
+                if (pasajerosArray != null) {
+                    List<String> pasajeros = new ArrayList<>();
+                    for (Object pasajeroObj : pasajerosArray) {
+                        pasajeros.add(pasajeroObj.toString());
+                    }
+                    viaje.establecerPasajeros(pasajeros);
+                }
                 mapa.put(codviaje, viaje);
             }
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
 
@@ -193,18 +194,22 @@ public class GestorViajes {
     }
 
     public JSONObject reservaViaje(String codviaje, String codcli) {
-        // POR IMPLEMENTAR
-        for (String cod : mapa.keySet()) {
-            if (mapa.get(cod).getCodviaje().equals(codviaje)) {
-                if (mapa.get(cod).quedanPlazas()) {
-                    mapa.get(cod).anyadePasajero(codcli);
-                    return mapa.get(cod).toJSON();
-                }
+        Viaje viaje = mapa.get(codviaje);
+        if (viaje != null) {
+            if (viaje.quedanPlazas() && !viaje.finalizado()) {
+                viaje.anyadePasajero(codcli);
+                System.out.println("Pasajero añadido.");
+                return viaje.toJSON();
+            } else {
+                // Aquí puedes manejar el caso de no tener plazas o viaje finalizado
+                System.out.println("No se puede reservar: no hay plazas o viaje finalizado.");
             }
+        } else {
+            System.out.println("Viaje no encontrado.");
         }
-
         return null;
     }
+
 
     /**
      * El cliente codcli anula su reserva del viaje codviaje

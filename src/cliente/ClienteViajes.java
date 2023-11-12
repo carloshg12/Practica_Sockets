@@ -66,13 +66,18 @@ public class ClienteViajes {
                     System.out.print("Indica el origen del viaje: ");
                     String origen = teclado.nextLine();
                     JSONArray list = aux.consultaViajes(origen);
-                    for (Object object : list) {
-                        if (object instanceof JSONObject) {
-                            JSONObject viaje = (JSONObject) object;
-                            System.out.println(formatearViaje(viaje));
+                    if (list.isEmpty()) {
+                        System.out.println("No hay viajes con ese origen.");
+                    } else {
+
+
+                        for (Object object : list) {
+                            if (object instanceof JSONObject) {
+                                JSONObject viaje = (JSONObject) object;
+                                System.out.println(formatearViaje(viaje));
+                            }
                         }
                     }
-
                     break;
                 }
 
@@ -81,9 +86,18 @@ public class ClienteViajes {
                     // POR IMPLEMENTAR
                     System.out.print("Indica el viaje a reservar: ");
                     String codviaje = teclado.nextLine();
+
                     obj = aux.reservaViaje(codviaje, codcli);
-                    System.out.println(formatearViaje(obj));
+                    if (obj.get("codviaje") != null) {
+                        System.out.println(formatearViaje(obj));
+
+                    } else {
+                        System.out.println("No hay viajes con ese código.");
+
+                    }
+
                     break;
+
                 }
 
                 case 3: { // Anular una reserva
@@ -153,7 +167,6 @@ public class ClienteViajes {
 
         return resultado;
     }
-
 
 
 } // fin class

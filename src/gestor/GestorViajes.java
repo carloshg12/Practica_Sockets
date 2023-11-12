@@ -201,7 +201,7 @@ public class GestorViajes {
                 System.out.println("Pasajero añadido.");
                 return viaje.toJSON();
             } else {
-                // Aquí puedes manejar el caso de no tener plazas o viaje finalizado
+
                 System.out.println("No se puede reservar: no hay plazas o viaje finalizado.");
             }
         } else {

@@ -218,10 +218,8 @@ public class GestorViajes {
     public JSONObject anulaReserva(String codviaje, String codcli) {
         for (String cod : mapa.keySet()) {
             if (mapa.get(cod).getCodviaje().equals(codviaje)) {
-
                 mapa.get(cod).borraPasajero(codcli);
                 return mapa.get(cod).toJSON();
-
             }
         }
         return null;
@@ -264,7 +262,7 @@ public class GestorViajes {
                                   long numplazas) {
         // POR IMPLEMENTAR
         Viaje nuevoViaje = new Viaje(codcli, origen, destino, fecha, precio, numplazas);
-        while (!es_fecha_valida(fecha)){
+        while (!nuevoViaje.finalizado()){
             mapa.put(nuevoViaje.getCodprop(), nuevoViaje);
             return nuevoViaje.toJSON();
 

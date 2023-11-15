@@ -83,7 +83,18 @@ class HiloServidorViajes implements Runnable {
                     }
 
                     case "3": { // Pone en venta un articulo
-                        // ...
+                        try {
+                            JSONObject viaje = gestor.anulaReserva(jsonObject.get("codviaje").toString(), jsonObject.get("codcli").toString());
+                            if (viaje != null) {
+                                myDataSocket.sendMessage(viaje.toJSONString());
+                            } else {
+                                JSONObject respuestaError = new JSONObject();
+                                respuestaError.put("error", "La reserva no pudo anularse.");
+                                myDataSocket.sendMessage(respuestaError.toJSONString());
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Exception en reserva: " + e.getMessage());
+                        }
 
                         break;
                     }
@@ -108,7 +119,7 @@ class HiloServidorViajes implements Runnable {
                     }
                     case "5": { // Borra un viaje
                         try {
-                            JSONObject viaje = gestor.borraViaje(jsonObject.get("codviaje").toString(), jsonObject.get("codprop").toString());
+                            JSONObject viaje = gestor.borraViaje(jsonObject.get("codviaje").toString(), jsonObject.get("codcli").toString());
                             if (viaje != null) {
                                 System.out.println(viaje);
                                 myDataSocket.sendMessage(viaje.toJSONString());

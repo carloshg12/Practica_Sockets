@@ -48,7 +48,7 @@ public class AuxiliarClienteViajes {
 	 * @return array JSON de viajes desde un origen. array vacio si no hay ninguno
 	 */
 	public JSONArray consultaViajes(String origen) {
-		// POR IMPLEMENTAR
+
 		JSONObject consulta = new JSONObject();
 		consulta.put("peticion", 1);
 		consulta.put("origen", origen);
@@ -61,7 +61,7 @@ public class AuxiliarClienteViajes {
 			array = (JSONArray) parser.parse(respuesta);
 		} catch (Exception e) { e.printStackTrace();}
 
-		return array; // cambiar por el retorno correcto
+		return array;
 	} // end consultaViajes
 
 
@@ -77,7 +77,7 @@ public class AuxiliarClienteViajes {
 		JSONObject consulta = new JSONObject();
 		consulta.put("peticion", 2);
 		consulta.put("codviaje", codviaje);
-		consulta.put("codprop",codcliente);
+		consulta.put("codcli",codcliente);
 
 		String respuesta;
 		JSONObject viaje = new JSONObject();
@@ -87,7 +87,7 @@ public class AuxiliarClienteViajes {
 			viaje = (JSONObject) parser.parse(respuesta);
 
 		} catch (Exception e) { e.printStackTrace();}
-		return viaje; // cambiar por el retorno correcto
+		return viaje;
 
 	} // end reservaViaje
 	
@@ -115,8 +115,24 @@ public class AuxiliarClienteViajes {
 	 * @return	viaje ofertado en formatoJSON. Vacio si no se ha podido ofertar
 	 */
 	public JSONObject ofertaViaje(String codprop, String origen, String destino, String fecha, long precio, long numplazas) {
-		// POR IMPLEMENTAR
-		return null; // cambiar por el retorno correcto
+		JSONObject consulta = new JSONObject();
+		consulta.put("peticion", 4);
+		consulta.put("codprop", codprop);
+		consulta.put("origen", origen);
+		consulta.put("destino", destino);
+		consulta.put("fecha", fecha);
+		consulta.put("precio", precio);
+		consulta.put("numplazas", numplazas);
+
+		String respuesta;
+		JSONObject viaje = new JSONObject();
+		try {
+			mySocket.sendMessage(consulta.toJSONString());
+			respuesta = mySocket.receiveMessage();
+			viaje = (JSONObject) parser.parse(respuesta);
+
+		} catch (Exception e) { e.printStackTrace();}
+		return viaje;
 	} // end ofertaViaje
 
 	/**
@@ -140,14 +156,14 @@ public class AuxiliarClienteViajes {
 			viaje = (JSONObject) parser.parse(respuesta);
 
 		} catch (Exception e) { e.printStackTrace();}
-		return viaje; // cambiar por el retorno correctocto
+		return viaje;
 	} // end borraViaje
 
 	/**
 	 * Finaliza la conexion con el servidor
 	 */
 	public void cierraSesion( ) {
-		// POR IMPLEMENTAR
+
 		JSONObject consulta = new JSONObject();
 		consulta.put("peticion", 0);
 		try {

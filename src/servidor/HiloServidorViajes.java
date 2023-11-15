@@ -68,7 +68,7 @@ class HiloServidorViajes implements Runnable {
                     }
                     case "2": { // Reserva una plaza en un viaje
                         try {
-                            JSONObject viaje = gestor.reservaViaje(jsonObject.get("codviaje").toString(), jsonObject.get("codprop").toString());
+                            JSONObject viaje = gestor.reservaViaje(jsonObject.get("codviaje").toString(), jsonObject.get("codcli").toString());
                             if (viaje != null) {
                                 myDataSocket.sendMessage(viaje.toJSONString());
                             } else {
@@ -88,7 +88,21 @@ class HiloServidorViajes implements Runnable {
                         break;
                     }
                     case "4": { // Oferta un viaje
-                        // ...
+
+                        try {
+                            JSONObject viaje = gestor.ofertaViaje(jsonObject.get("codprop").toString(), jsonObject.get("origen").toString(),
+                                    jsonObject.get("destino").toString(), jsonObject.get("fecha").toString(), (long) jsonObject.get("precio")
+                                    , (long) jsonObject.get("numplazas"));
+                            if (viaje != null) {
+                                myDataSocket.sendMessage(viaje.toJSONString());
+                            } else {
+                                JSONObject respuestaError = new JSONObject();
+                                respuestaError.put("error", "El viaje no ha podido ser añadido.");
+                                myDataSocket.sendMessage(respuestaError.toJSONString());
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Exception en reserva: " + e.getMessage());
+                        }
 
                         break;
                     }

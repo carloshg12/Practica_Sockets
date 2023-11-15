@@ -85,8 +85,6 @@ public class GestorViajes {
             throw new RuntimeException(e);
         }
 
-
-        // [{"fecha":"07-11-2023","precio":39,"codprop":"juan","pasajeros":[],"numplazas":3,"origen":"Castellón","destino":"Cordoba","codviaje":"jCC07"},{"fecha":"28-05-2023","precio":16,"codprop":"pedro","pasajeros":[],"numplazas":1,"origen":"Castellón","destino":"Alicante","codviaje":"pCA28"}]
     }
 
     /**
@@ -164,7 +162,6 @@ public class GestorViajes {
             e.printStackTrace();
         }
     }
-
 
     /**
      * Devuelve los viajes disponibles con un origen dado

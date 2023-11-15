@@ -284,7 +284,13 @@ public class GestorViajes {
      * @return JSONObject del viaje borrado. JSON vacio si no se ha borrado
      */
     public JSONObject borraViaje(String codviaje, String codcli) {
-        // POR IMPLEMENTAR
-        return null;
+        Viaje viaje = mapa.get(codviaje);
+
+        if (viaje != null && viaje.getCodprop().equals(codcli)) {
+            mapa.remove(codviaje);
+            return viaje.toJSON();
+        } else {
+            return viaje.toJSON();
+        }
     }
 }

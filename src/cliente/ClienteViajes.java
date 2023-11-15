@@ -106,7 +106,7 @@ public class ClienteViajes {
                     System.out.print("Indica el viaje que quieres anular: ");
                     String codviaje = teclado.nextLine();
                     obj = aux.anulaReserva(codviaje, codcli);
-                    System.out.println(obj);
+                    System.out.println(formatearViaje(obj));
                     break;
                 }
 

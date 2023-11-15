@@ -93,7 +93,19 @@ class HiloServidorViajes implements Runnable {
                         break;
                     }
                     case "5": { // Borra un viaje
-                        // ...
+                        try {
+                            JSONObject viaje = gestor.borraViaje(jsonObject.get("codviaje").toString(), jsonObject.get("codprop").toString());
+                            if (viaje != null) {
+                                System.out.println(viaje);
+                                myDataSocket.sendMessage(viaje.toJSONString());
+                            } else {
+                                JSONObject respuestaError = new JSONObject();
+                                respuestaError.put("error", "La reserva no pudo realizarse.");
+                                myDataSocket.sendMessage(respuestaError.toJSONString());
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Exception en reserva: " + e.getMessage());
+                        }
                         break;
                     }
 

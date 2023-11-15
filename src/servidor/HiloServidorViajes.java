@@ -145,5 +145,4 @@ class HiloServidorViajes implements Runnable {
             System.out.println("Exception caught in thread: " + ex);
         } // fin catch
     } //fin run
-
 } //fin class 

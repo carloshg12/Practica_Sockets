@@ -246,7 +246,6 @@ public class GestorViajes {
         }
 
     }
-
     /**
      * El cliente codcli oferta un Viaje
      *

@@ -236,14 +236,3 @@ public class Viaje implements Serializable {
     }
 
 } // fin clase Viaje
-
-
-
-
-
-
-
-
-
-
-

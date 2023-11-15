@@ -19,7 +19,6 @@ public class MyStreamSocket  {
       setStreams();
 
    }
-
    public MyStreamSocket(Socket socket)  throws IOException {
       this.socket = socket;
       String host = socket.getInetAddress().getHostName();
